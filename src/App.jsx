@@ -8,7 +8,6 @@ import "./App.css";
 
 function App() {
   const [page, setPage] = useState("home");
-  const [showProductList, setShowProductList] = useState(false);
 
   const cartItems = useSelector((state) => state.cart.items);
 
@@ -17,23 +16,20 @@ function App() {
     0
   );
 
+  const renderNav = () => (
+    <nav>
+      <button onClick={() => setPage("home")}>Home</button>
+      <button onClick={() => setPage("products")}>Plants</button>
+      <button onClick={() => setPage("cart")}>
+        Cart ({cartCount})
+      </button>
+    </nav>
+  );
+
   if (page === "products") {
     return (
       <>
-        <nav>
-          <button onClick={() => setPage("home")}>
-            Home
-          </button>
-
-          <button onClick={() => setPage("products")}>
-            Plants
-          </button>
-
-          <button onClick={() => setPage("cart")}>
-            Cart ({cartCount})
-          </button>
-        </nav>
-
+        {renderNav()}
         <ProductList />
       </>
     );
@@ -42,20 +38,7 @@ function App() {
   if (page === "cart") {
     return (
       <>
-        <nav>
-          <button onClick={() => setPage("home")}>
-            Home
-          </button>
-
-          <button onClick={() => setPage("products")}>
-            Plants
-          </button>
-
-          <button onClick={() => setPage("cart")}>
-            Cart ({cartCount})
-          </button>
-        </nav>
-
+        {renderNav()}
         <CartItem />
       </>
     );
@@ -67,17 +50,14 @@ function App() {
         <h1>Paradise Nursery</h1>
 
         <p>
-          Welcome to Paradise Nursery, your one-stop destination for beautiful
-          indoor plants. We provide high-quality plants that bring life and
-          freshness into your home.
+          Welcome to Paradise Nursery, your one-stop destination for
+          beautiful indoor plants. We provide high-quality plants that
+          bring life and freshness into your home.
         </p>
 
         <button
           className="start-btn"
-          onClick={() => {
-            setShowProductList(true);
-            setPage("products");
-          }}
+          onClick={() => setPage("products")}
         >
           Get Started
         </button>

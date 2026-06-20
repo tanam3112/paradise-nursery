@@ -4,9 +4,11 @@ import {
   decreaseQuantity,
   removeItem,
 } from "../redux/CartSlice";
+import { useNavigate } from "react-router-dom";
 
 function CartItem() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const items = useSelector((state) => state.cart.items);
 
@@ -15,11 +17,19 @@ function CartItem() {
     0
   );
 
+  const handleDecrease = (item) => {
+    if (item.quantity === 1) {
+      dispatch(removeItem(item.id));
+    } else {
+      dispatch(decreaseQuantity(item.id));
+    }
+  };
+
   return (
     <div>
       <h1>Shopping Cart</h1>
 
-      <h2>Total Cart Amount: ${totalAmount}</h2>
+      <h2>Total Cart Amount: ${totalAmount.toFixed(2)}</h2>
 
       {items.length === 0 && <p>Your cart is empty.</p>}
 
@@ -33,8 +43,9 @@ function CartItem() {
           }}
         >
           <img
-            src="https://via.placeholder.com/100"
+            src={item.image || "https://via.placeholder.com/100"}
             alt={item.name}
+            width="100"
           />
 
           <h3>{item.name}</h3>
@@ -43,46 +54,27 @@ function CartItem() {
 
           <p>Quantity: {item.quantity}</p>
 
-          <p>
-            Total Cost: $
-            {item.price * item.quantity}
-          </p>
+          <p>Total Cost: ${item.price * item.quantity}</p>
 
-          <button
-            onClick={() =>
-              dispatch(increaseQuantity(item.id))
-            }
-          >
+          <button onClick={() => dispatch(increaseQuantity(item.id))}>
             +
           </button>
 
-          <button
-            onClick={() =>
-              dispatch(decreaseQuantity(item.id))
-            }
-          >
+          <button onClick={() => handleDecrease(item)}>
             -
           </button>
 
-          <button
-            onClick={() =>
-              dispatch(removeItem(item.id))
-            }
-          >
+          <button onClick={() => dispatch(removeItem(item.id))}>
             Delete
           </button>
         </div>
       ))}
 
-      <button
-        onClick={() => alert("Coming Soon")}
-      >
+      <button onClick={() => alert("Coming Soon")}>
         Checkout
       </button>
 
-      <button
-        onClick={() => window.location.reload()}
-      >
+      <button onClick={() => navigate("/")}>
         Continue Shopping
       </button>
     </div>
