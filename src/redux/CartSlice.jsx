@@ -1,61 +1,70 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const initialState = {
-  items: [],
-};
+import ProductList from "./components/ProductList";
+import CartItem from "./components/CartItem";
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState,
-  reducers: {
-    addItem: (state, action) => {
-      const existing = state.items.find(
-        (item) => item.id === action.payload.id
-      );
+import "./App.css";
 
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        state.items.push({
-          ...action.payload,
-          quantity: 1,
-        });
-      }
-    },
+function App() {
+  const [page, setPage] = useState("home");
 
-    increaseQuantity: (state, action) => {
-      const item = state.items.find(
-        (item) => item.id === action.payload
-      );
+  const cartItems = useSelector((state) => state.cart.items);
 
-      if (item) {
-        item.quantity += 1;
-      }
-    },
+  const cartCount = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
-    decreaseQuantity: (state, action) => {
-      const item = state.items.find(
-        (item) => item.id === action.payload
-      );
+  const renderNav = () => (
+    <nav>
+      <button onClick={() => setPage("home")}>Home</button>
+      <button onClick={() => setPage("products")}>Plants</button>
+      <button onClick={() => setPage("cart")}>
+        Cart ({cartCount})
+      </button>
+    </nav>
+  );
 
-      if (item && item.quantity > 1) {
-        item.quantity -= 1;
-      }
-    },
+  if (page === "products") {
+    return (
+      <>
+        {renderNav()}
+        <ProductList />
+      </>
+    );
+  }
 
-    removeItem: (state, action) => {
-      state.items = state.items.filter(
-        (item) => item.id !== action.payload
-      );
-    },
-  },
-});
+  if (page === "cart") {
+    return (
+      <>
+        {renderNav()}
+        <CartItem />
+      </>
+    );
+  }
 
-export const {
-  addItem,
-  increaseQuantity,
-  decreaseQuantity,
-  removeItem,
-} = cartSlice.actions;
+  return (
+    <div className="landing-page">
+      <div className="overlay">
+        {/* ✅ FIX QUAN TRỌNG NHẤT */}
+        <h1>Welcome to Paradise Nursery</h1>
 
-export default cartSlice.reducer;
+        <p>
+          Welcome to Paradise Nursery, your one-stop destination for
+          beautiful indoor plants. We provide high-quality plants that
+          bring life and freshness into your home.
+        </p>
+
+        <button
+          className="start-btn"
+          onClick={() => setPage("products")}
+        >
+          Get Started
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default App;

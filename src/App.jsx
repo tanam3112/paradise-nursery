@@ -47,7 +47,7 @@ function App() {
   return (
     <div className="landing-page">
       <div className="overlay">
-        <h1>Paradise Nursery</h1>
+        <h1>Welcome to Paradise Nursery</h1>
 
         <p>
           Welcome to Paradise Nursery, your one-stop destination for
