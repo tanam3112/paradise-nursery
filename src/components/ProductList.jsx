@@ -8,41 +8,7 @@ function ProductList() {
   const isInCart = (id) =>
     cartItems.some((item) => item.id === id);
 
-  const plantCategories = [
-    {
-      name: "Air Purifying Plants",
-      plants: [
-        { id: 1, name: "Aloe Vera", price: 15, image: "https://via.placeholder.com/150" },
-        { id: 2, name: "Snake Plant", price: 20, image: "https://via.placeholder.com/150" },
-        { id: 3, name: "Peace Lily", price: 18, image: "https://via.placeholder.com/150" },
-        { id: 4, name: "Spider Plant", price: 12, image: "https://via.placeholder.com/150" },
-        { id: 5, name: "Boston Fern", price: 14, image: "https://via.placeholder.com/150" },
-        { id: 6, name: "Rubber Plant", price: 25, image: "https://via.placeholder.com/150" },
-      ],
-    },
-    {
-      name: "Medicinal Plants",
-      plants: [
-        { id: 7, name: "Basil", price: 10, image: "https://via.placeholder.com/150" },
-        { id: 8, name: "Mint", price: 12, image: "https://via.placeholder.com/150" },
-        { id: 9, name: "Aloe Medicinal", price: 16, image: "https://via.placeholder.com/150" },
-        { id: 10, name: "Turmeric", price: 22, image: "https://via.placeholder.com/150" },
-        { id: 11, name: "Ginger", price: 20, image: "https://via.placeholder.com/150" },
-        { id: 12, name: "Neem", price: 19, image: "https://via.placeholder.com/150" },
-      ],
-    },
-    {
-      name: "Aromatic Plants",
-      plants: [
-        { id: 13, name: "Lavender", price: 18, image: "https://via.placeholder.com/150" },
-        { id: 14, name: "Rosemary", price: 17, image: "https://via.placeholder.com/150" },
-        { id: 15, name: "Jasmine", price: 20, image: "https://via.placeholder.com/150" },
-        { id: 16, name: "Mint Aromatic", price: 11, image: "https://via.placeholder.com/150" },
-        { id: 17, name: "Chamomile", price: 13, image: "https://via.placeholder.com/150" },
-        { id: 18, name: "Lemongrass", price: 15, image: "https://via.placeholder.com/150" },
-      ],
-    },
-  ];
+  const plantCategories = [ /* giữ nguyên data của bạn */ ];
 
   const handleAddToCart = (plant) => {
     dispatch(addItem(plant));
@@ -50,6 +16,11 @@ function ProductList() {
 
   return (
     <div>
+      {/* ✅ NAVBAR (QUAN TRỌNG BỊ THIẾU) */}
+      <nav>
+        <h2>Plant Store</h2>
+      </nav>
+
       <h1>Plant Shop</h1>
 
       {plantCategories.map((category) => (
@@ -66,14 +37,9 @@ function ProductList() {
                   width: "160px",
                 }}
               >
-                <img
-                  src={plant.image}
-                  alt={plant.name}
-                  width="100"
-                />
+                <img src={plant.image} alt={plant.name} width="100" />
 
                 <h3>{plant.name}</h3>
-
                 <p>${plant.price}</p>
 
                 <button

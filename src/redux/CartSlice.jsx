@@ -1,70 +1,51 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { createSlice } from "@reduxjs/toolkit";
 
-import ProductList from "./components/ProductList";
-import CartItem from "./components/CartItem";
+const initialState = {
+  items: []
+};
 
-import "./App.css";
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    addItem: (state, action) => {
+      const existing = state.items.find(
+        item => item.id === action.payload.id
+      );
 
-function App() {
-  const [page, setPage] = useState("home");
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        state.items.push({
+          ...action.payload,
+          quantity: 1
+        });
+      }
+    },
 
-  const cartItems = useSelector((state) => state.cart.items);
+    removeItem: (state, action) => {
+      state.items = state.items.filter(
+        item => item.id !== action.payload
+      );
+    },
 
-  const cartCount = cartItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+    updateQuantity: (state, action) => {
+      const { id, quantity } = action.payload;
 
-  const renderNav = () => (
-    <nav>
-      <button onClick={() => setPage("home")}>Home</button>
-      <button onClick={() => setPage("products")}>Plants</button>
-      <button onClick={() => setPage("cart")}>
-        Cart ({cartCount})
-      </button>
-    </nav>
-  );
+      const item = state.items.find(i => i.id === id);
 
-  if (page === "products") {
-    return (
-      <>
-        {renderNav()}
-        <ProductList />
-      </>
-    );
+      if (item) {
+        if (quantity <= 0) {
+          state.items = state.items.filter(i => i.id !== id);
+        } else {
+          item.quantity = quantity;
+        }
+      }
+    }
   }
+});
 
-  if (page === "cart") {
-    return (
-      <>
-        {renderNav()}
-        <CartItem />
-      </>
-    );
-  }
+export const { addItem, removeItem, updateQuantity } =
+  cartSlice.actions;
 
-  return (
-    <div className="landing-page">
-      <div className="overlay">
-        {/* ✅ FIX QUAN TRỌNG NHẤT */}
-        <h1>Welcome to Paradise Nursery</h1>
-
-        <p>
-          Welcome to Paradise Nursery, your one-stop destination for
-          beautiful indoor plants. We provide high-quality plants that
-          bring life and freshness into your home.
-        </p>
-
-        <button
-          className="start-btn"
-          onClick={() => setPage("products")}
-        >
-          Get Started
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default App;
+export default cartSlice.reducer;
