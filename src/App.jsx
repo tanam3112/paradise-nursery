@@ -8,6 +8,7 @@ import "./App.css";
 
 function App() {
   const [page, setPage] = useState("home");
+  const [showProductList, setShowProductList] = useState(false);
 
   const cartItems = useSelector((state) => state.cart.items);
 
@@ -19,14 +20,7 @@ function App() {
   if (page === "products") {
     return (
       <>
-        <nav
-          style={{
-            display: "flex",
-            gap: "20px",
-            padding: "20px",
-            background: "#e8f5e9",
-          }}
-        >
+        <nav>
           <button onClick={() => setPage("home")}>
             Home
           </button>
@@ -48,14 +42,7 @@ function App() {
   if (page === "cart") {
     return (
       <>
-        <nav
-          style={{
-            display: "flex",
-            gap: "20px",
-            padding: "20px",
-            background: "#e8f5e9",
-          }}
-        >
+        <nav>
           <button onClick={() => setPage("home")}>
             Home
           </button>
@@ -87,7 +74,10 @@ function App() {
 
         <button
           className="start-btn"
-          onClick={() => setPage("products")}
+          onClick={() => {
+            setShowProductList(true);
+            setPage("products");
+          }}
         >
           Get Started
         </button>
